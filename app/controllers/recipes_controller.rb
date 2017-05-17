@@ -5,7 +5,21 @@ class RecipesController < ApplicationController
   end
 
   def index
+    if session[:count] == nil
+      session[:count] = 0
+    end
+
+    session[:count] += 1
+    @visit_count = session[:count]
+
+
+
+
     @recipes = Recipe.all
+    sort_attribute = params[:sort]
+    if sort_attribute
+      @recipes = Recipe.all.order(sort_attribute)
+    end
   end
 
   def show
@@ -24,6 +38,7 @@ class RecipesController < ApplicationController
                         directions: params[:directions]
                         )
     recipe.save
+    redirect_to "/recipes/#{recipe.id}"
   end
 
   def edit
@@ -39,5 +54,10 @@ class RecipesController < ApplicationController
                            directions: params[:directions]
                             )
     recipe.save
+  end
+
+  def destroy
+    recipe = Recipe.find(params[:id])
+    recipe.destroy
   end
 end
