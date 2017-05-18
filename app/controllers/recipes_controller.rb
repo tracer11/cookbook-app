@@ -33,9 +33,10 @@ class RecipesController < ApplicationController
   def create
     recipe = Recipe.new(
                         title: params[:title],
-                        chef: params[:chef],
                         ingridients: params[:ingridients],
-                        directions: params[:directions]
+                        directions: params[:directions],
+                        prep_time: params[:prep_time],
+                        user_id: current_user.id  
                         )
     recipe.save
     redirect_to "/recipes/#{recipe.id}"
